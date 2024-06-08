@@ -4,7 +4,7 @@
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
                     <a href="<?= base_url('/dashboard'); ?>" class="text-nowrap logo-img">
-                        <img src="../assets/images/logos/stis.png" class="mx-1" width="40" alt="" />
+                        <img src="<?= base_url('/assets/images/logos/stis.png'); ?>" class="mx-1" width="40" alt="" />
                         <span class="card-title text-dark fw-bolder">Katalog Layanan STIS</span>
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -39,7 +39,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="#" aria-expanded="false">
+                            <a class="sidebar-link <?= ($tajuk == 'Pengajuan Layanan') ? 'active'  : ''; ?>" href="<?= base_url('/create_layanan'); ?>" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-clipboard-plus"></i>
                                 </span>
@@ -55,7 +55,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="#" aria-expanded="false">
+                            <a class="sidebar-link <?= ($tajuk == 'Persetujuan Layanan') ? 'active'  : ''; ?>" href="<?= base_url('/manajemen_persetujuan'); ?>" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-checklist"></i>
                                 </span>
@@ -65,6 +65,14 @@
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">AUTH</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="#" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-home-plus"></i>
+                                </span>
+                                <span class="hide-menu">Manajemen Penyelenggara</span>
+                            </a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="#" aria-expanded="false">

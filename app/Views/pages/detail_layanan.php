@@ -58,14 +58,6 @@
                                 <div class="card-body">
                                     <h5 class="card-title fw-semibold mb-4"><?= $standar_layanan['nama_layanan']; ?></h5>
                                     <table class="table table-bordered">
-                                        <!-- <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                </tr>
-                            </thead> -->
                                         <tbody>
                                             <tr>
                                                 <th scope="row">
@@ -78,7 +70,7 @@
                                                     <h5 class="fw-semibold mb-1">Sistem, Mekanisme, dan Prosedur</h5>
                                                 </th>
                                                 <td>
-                                                    <img src="<?= base_url('layanan_images/peminjaman_bahan_pustaka.png'); ?>" class="w-50" alt="Gambar Teknis">
+                                                    <img src="<?= base_url('layanan_images/' . $standar_layanan['gambar']); ?>" class="w-50" alt="Gambar Teknis">
                                                     <p><?= nl2br($standar_layanan['sistem_mekanisme_dan_prosedur']); ?></p>
                                                 </td>
                                             </tr>

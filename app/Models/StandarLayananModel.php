@@ -12,7 +12,10 @@ class StandarLayananModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'nama_layanan', 'persyaratan', 'sistem_mekanisme_dan_prosedur', 'jangka_waktu_pelayanan', 'biaya_tarif', 'produk_layanan', 'penanganan_pengaduan_saran_masukan', 'dasar_hukum', 'sarana_prasarana_fasilitas', 'kopetensi_pelaksana', 'pengawasan_internal', 'jumlah_pelaksana', 'jaminan_pelayanan', 'jaminan_keamanan_keselamatan_pelayanan', 'evaluasi_kinerja_pelaksana', 'link', 'penyelenggara_layanan_id', 'gambar', 'status'
+    ];
+
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -52,5 +55,10 @@ class StandarLayananModel extends Model
     public function get_standar_layanan()
     {
         return $this->findAll();
+    }
+
+    public function get_standar_layanan_where_status($status)
+    {
+        return $this->where('status', $status)->findAll();
     }
 }

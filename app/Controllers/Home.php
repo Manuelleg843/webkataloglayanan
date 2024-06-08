@@ -19,17 +19,21 @@ class Home extends BaseController
     public function index(): string
     {
         $data = [
-            'standar_layanan' => $this->standarLayananModel->get_standar_layanan(),
+            'standar_layanan' => $this->standarLayananModel->get_standar_layanan_where_status('1'),
         ];
         return view('pages/landing_page', $data);
     }
 
-    public function dashboard(): string
+    public function dashboard()
     {
         // 
+        if (!session()->get('email')) {
+            return redirect()->to('/login');
+        }
+
         $data = [
             'tajuk' => 'Dashboard',
-            'standar_layanan' => $this->standarLayananModel->get_standar_layanan(),
+            'standar_layanan' => $this->standarLayananModel->get_standar_layanan_where_status('1'),
         ];
 
         return view('pages/dashboard', $data);

@@ -29,7 +29,7 @@
                         <div id="searchHelp" class="form-text"><b>Contoh:</b> layanan, ijazah, laporan, data, kerjasama, dan lain lain...</div>
                     </div>
                 </form>
-                <h5 class="card-title fw-semibold mb-4">Layanan Terdaftar</h5>
+                <h5 class="card-title fw-semibold mb-4">Layanan Yang Diajukan</h5>
                 <div class="table-responsive">
                     <table class="table text-nowrap mb-0 align-middle">
                         <thead class="text-dark fs-4">
@@ -79,11 +79,11 @@
                                     <td class="border-bottom-0">
                                         <div class="d-flex justify-content-evenly" role="group" aria-label="Basic example">
                                             <a href="<?= base_url('/detail_layanan/') . $layanan['id']; ?>" class="btn btn-primary"><i class="ti ti-eye"></i></a>
-                                            <a href="<?= base_url('/edit_layanan/') . $layanan['id']; ?>" type="button" class="btn btn-warning"><i class="ti ti-edit"></i></a>
-                                            <form class="" action="/delete_layanan/<?= $layanan['id']; ?>" method="POST">
+                                            <a href="<?= base_url('/review_layanan/') . $layanan['id']; ?>" type="button" class="btn btn-warning"><i class="ti ti-edit"></i></a>
+                                            <form class="" action="/approve_layanan/<?= $layanan['id']; ?>" method="POST">
                                                 <?= csrf_field(); ?>
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin?')"><i class="ti ti-trash"></i></button>
+                                                <input type="hidden" name="approve" value="1">
+                                                <button type="submit" class="btn btn-success" onclick="return confirm('Apakah anda yakin?')"><i class="ti ti-checkbox"></i></button>
                                             </form>
                                         </div>
                                     </td>

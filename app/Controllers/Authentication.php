@@ -59,7 +59,7 @@ class Authentication extends BaseController
         if ($user && password_verify($login['password'], $user['password'])) {
             $user = $this->userModel->get_user_by_email($login['email']);
             $this->_setSession($user);
-            return redirect()->to('manajemen_layanan');
+            return redirect()->to('dashboard');
         } else {
             session()->setFlashdata('error', 'Email atau password salah!');
             session()->setFlashdata('email', $login['email']);

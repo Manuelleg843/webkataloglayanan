@@ -64,7 +64,7 @@
                                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                                     <?php foreach ($standar_layanan as $layanan) : ?>
                                         <div class="col-xl-4 d-flex align-items-stretch">
-                                            <div class="card overflow-hidden rounded-2 h-full p-3 bg-white border-[1px] border-gray-300 w-full shadow-xl flex flex-col gap-2 justify-between">
+                                            <div class="card overflow-hidden rounded-2 h-full p-3 bg-white border-[1px] border-gray-300 w-full shadow-xl flex flex-col gap-2 justify-between" style="width: 400px;">
                                                 <div class="d-flex justify-content-start gap-3 lg:gap-4 align-items-stretch">
                                                     <img src="../assets/images/logos/stis.png" width="50" height="50" class="object-contain" />
                                                     <div class="flex-grow">
