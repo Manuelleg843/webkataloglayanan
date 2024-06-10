@@ -6,13 +6,15 @@ use CodeIgniter\Model;
 
 class ReviewStandarLayananModel extends Model
 {
-    protected $table            = 'reviewstandarlayanan';
+    protected $table            = 'review_standar_layanan';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'standar_layanan_id', 'format', 'alur', 'catatan', 'created_at',
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -43,4 +45,9 @@ class ReviewStandarLayananModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function get_all_review_standar_layanan_by_id($id)
+    {
+        return $this->where('standar_layanan_id', $id)->findAll();
+    }
 }

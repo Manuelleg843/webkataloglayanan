@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Katalog Layanan STIS</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/stis.png" />
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <link rel="shortcut icon" type="image/png" href="<?= base_url('/assets/images/logos/stis.png'); ?>" />
+    <link rel="stylesheet" href="<?= base_url('/assets/css/styles.min.css'); ?>" />
 </head>
 
 <body>
@@ -52,9 +52,9 @@
                     <div class="container-fluid">
                         <div class="card">
                             <div class="card-body">
-                                <form>
+                                <form class="search-form" action="<?= base_url('/'); ?>" method="get">
                                     <div class="mb-3">
-                                        <input type="" class="form-control" placeholder="Masukkan kata kunci" id="" aria-describedby="" />
+                                        <input type="text" name="search" class="form-control" placeholder="Masukkan kata kunci" value="<?= esc($keyword) ?>" id="search-input" aria-describedby="" oninput="searchService()" />
                                         <div id="searchHelp" class="form-text">
                                             <b>Contoh:</b> layanan, ijazah, laporan, data,
                                             kerjasama, dan lain lain...
@@ -70,7 +70,7 @@
                                                     <div class="flex-grow">
                                                         <span class="fw-bolder"><?= $layanan['nama_layanan']; ?></span>
                                                         <br />
-                                                        <span class="fw-light"><?= $layanan['produk_layanan']; ?></span>
+                                                        <span class="fw-light"><?= substr($layanan['produk_layanan'], 0, 25); ?></span>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end mt-auto">
@@ -95,13 +95,14 @@
             </div>
         </div>
     </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+    <script src="<?= base_url('/assets/libs/jquery/dist/jquery.min.js'); ?>"></script>
+    <script src="<?= base_url('/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js'); ?>"></script>
+    <script src="<?= base_url('/assets/js/sidebarmenu.js'); ?>"></script>
+    <script src="<?= base_url('/assets/js/app.min.js'); ?>"></script>
+    <script src="<?= base_url('/assets/libs/apexcharts/dist/apexcharts.min.js'); ?>"></script>
+    <script src="<?= base_url('/assets/libs/simplebar/dist/simplebar.js'); ?>"></script>
+    <script src="<?= base_url('/assets/js/dashboard.js'); ?>"></script>
+    <script src="<?= base_url('/assets/js/layanan_form.js'); ?>"></script>
 </body>
 
 </html>

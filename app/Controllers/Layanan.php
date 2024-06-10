@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\PenyelenggaraLayananModel;
+use App\Models\ReviewStandarLayananModel;
 use App\Models\StandarLayananModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -11,11 +12,13 @@ class Layanan extends BaseController
 {
     protected $standarLayananModel;
     protected $penyelenggaraLayananModel;
+    protected $reviewStandarLayananModel;
 
     public function __construct()
     {
         $this->standarLayananModel = new StandarLayananModel();
         $this->penyelenggaraLayananModel = new PenyelenggaraLayananModel();
+        $this->reviewStandarLayananModel = new ReviewStandarLayananModel();
     }
     public function index()
     {
@@ -30,7 +33,27 @@ class Layanan extends BaseController
             return redirect()->to('/login');
         }
 
-        $standar_layanan = $this->standarLayananModel->get_standar_layanan();
+        if (!in_array(1, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
+        if ($keyword = $this->request->getVar('search')) {
+            # code...
+            if (session()->get('role_id') == 1) {
+                $standar_layanan = $this->standarLayananModel->groupStart()->like('nama_layanan', $keyword)->orLike('produk_layanan', $keyword)->groupEnd()->findAll();
+            } else {
+                $standar_layanan = $this->standarLayananModel->where('penyelenggara_layanan_id', session()->get('penyelenggara_layanan_id'))->groupStart()->like('nama_layanan', $keyword)->orLike('produk_layanan', $keyword)->groupEnd()->findAll();
+            }
+        } else {
+            if (session()->get('role_id') == 1) {
+                $standar_layanan = $this->standarLayananModel->get_standar_layanan();
+            } else {
+                $standar_layanan = $this->standarLayananModel->get_standar_layanan_where_penyelenggara_layanan_id(session()->get('penyelenggara_layanan_id'));
+            }
+        }
+
+
+        // $standar_layanan = $this->standarLayananModel->get_standar_layanan();
 
         foreach ($standar_layanan as $key => $value) {
             $standar_layanan[$key]['penyelenggara_layanan'] = $this->penyelenggaraLayananModel->get_nama_penyelenggara_layanan_by_id($value['penyelenggara_layanan_id']);
@@ -39,6 +62,7 @@ class Layanan extends BaseController
         $data = [
             'tajuk' => 'Manajemen Layanan',
             'standar_layanan' => $standar_layanan,
+            'keyword' => $keyword,
         ];
 
         return view('layanan/manajemen_layanan', $data);
@@ -50,7 +74,16 @@ class Layanan extends BaseController
             return redirect()->to('/login');
         }
 
-        $standar_layanan = $this->standarLayananModel->get_standar_layanan_where_status('0');
+        if (!in_array(2, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
+        if ($keyword = $this->request->getVar('search')) {
+            # code...
+            $standar_layanan = $this->standarLayananModel->where('status', 0)->groupStart()->like('nama_layanan', $keyword)->orLike('produk_layanan', $keyword)->groupEnd()->findAll();
+        } else {
+            $standar_layanan = $this->standarLayananModel->get_standar_layanan_where_status('0');
+        }
 
         foreach ($standar_layanan as $key => $value) {
             $standar_layanan[$key]['penyelenggara_layanan'] = $this->penyelenggaraLayananModel->get_nama_penyelenggara_layanan_by_id($value['penyelenggara_layanan_id']);
@@ -59,6 +92,7 @@ class Layanan extends BaseController
         $data = [
             'tajuk' => 'Persetujuan Layanan',
             'standar_layanan' => $standar_layanan,
+            'keyword' => $keyword,
         ];
 
         return view('layanan/manajemen_persetujuan', $data);
@@ -90,6 +124,10 @@ class Layanan extends BaseController
             return redirect()->to('/login');
         }
 
+        if (!in_array(1, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
         $data = [
             'tajuk' => 'Pengajuan Layanan',
             'validation' => \Config\Services::validation(),
@@ -111,6 +149,10 @@ class Layanan extends BaseController
             return redirect()->to('/login');
         }
 
+        if (!in_array(1, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
         if (!$this->standarLayananModel->get_standar_layanan_by_id($id)) {
             return redirect()->to('/manajemen_layanan');
         }
@@ -129,6 +171,10 @@ class Layanan extends BaseController
         // 
         if (!session()->get('email')) {
             return redirect()->to('/login');
+        }
+
+        if (!in_array(1, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
         }
 
         if (session()->get('role_id') == 1) {
@@ -212,6 +258,10 @@ class Layanan extends BaseController
             return redirect()->to('/login');
         }
 
+        if (!in_array(1, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
         // cek nama layanan
         $layananLama = $this->standarLayananModel->get_standar_layanan_by_id($id)['nama_layanan'];
         if ($layananLama == $this->request->getVar('nama_layanan')) {
@@ -283,6 +333,16 @@ class Layanan extends BaseController
             ]
         );
 
+        if ($this->standarLayananModel->get_standar_layanan_by_id($id)['status'] == 2) {
+            # code...
+            $this->standarLayananModel->save(
+                [
+                    'id' => $id,
+                    'status' => 0,
+                ]
+            );
+        }
+
         session()->setFlashdata('pesan', 'Layanan berhasil diubah');
 
         return redirect()->to('/manajemen_layanan');
@@ -293,6 +353,10 @@ class Layanan extends BaseController
         // 
         if (!session()->get('email')) {
             return redirect()->to('/login');
+        }
+
+        if (!in_array(1, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
         }
 
         if ($this->standarLayananModel->get_standar_layanan_by_id($id)['gambar'] != 'default.jpg') {
@@ -313,6 +377,10 @@ class Layanan extends BaseController
             return redirect()->to('/login');
         }
 
+        if (!in_array(2, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
         $this->request->getVar();
         $this->standarLayananModel->save(
             [
@@ -320,6 +388,8 @@ class Layanan extends BaseController
                 'status' => 1,
             ]
         );
+
+        $this->reviewStandarLayananModel->where('standar_layanan_id', $id)->delete();
 
         session()->setFlashdata('pesan', 'Layanan berhasil disetujui');
 
@@ -333,11 +403,137 @@ class Layanan extends BaseController
             return redirect()->to('/login');
         }
 
+        if (!in_array(2, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
         $data = [
             'tajuk' => 'Review Layanan',
             'standar_layanan' => $this->standarLayananModel->get_standar_layanan_by_id($id),
         ];
 
         return view('layanan/review_layanan', $data);
+    }
+
+    public function save_review($id)
+    {
+        // 
+        if (!session()->get('email')) {
+            return redirect()->to('/login');
+        }
+
+        if (!in_array(2, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
+        if (!$this->validate([
+            'format' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Format layanan wajib diisi',
+                ],
+            ],
+            'alur' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Alur layanan wajib diisi',
+                ],
+            ],
+            'catatan' => [
+                'rules' => 'permit_empty',
+            ],
+            'komentar' => [
+                'rules' => 'permit_empty',
+            ],
+        ])) {
+            $validation = \Config\Services::validation();
+
+            session()->setFlashdata('form_data', $this->request->getPost());
+            session()->setFlashdata('errors', $validation->getErrors());
+
+            return redirect()->back();
+        }
+
+        $review = $this->request->getVar();
+
+        $this->reviewStandarLayananModel->save(
+            [
+                'standar_layanan_id' => $id,
+                'format' => $review['format'],
+                'alur' => $review['alur'],
+                'catatan' => $review['catatan'],
+                'komentar' => $review['komentar'],
+            ]
+        );
+
+        $this->standarLayananModel->save(
+            [
+                'id' => $id,
+                'status' => 2,
+            ]
+        );
+
+        session()->setFlashdata('pesan', 'Review perbaikan layanan berhasil dikirim');
+
+        return redirect()->to('/manajemen_persetujuan');
+    }
+
+    public function review_pengajuan()
+    {
+        // 
+        if (!session()->get('email')) {
+            return redirect()->to('/login');
+        }
+
+        if (!in_array(1, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
+        if ($keyword = $this->request->getVar('search')) {
+            if (session()->get('role_id') == 1) {
+                $standar_layanan = $this->standarLayananModel->where('status', 2)->groupStart()->like('nama_layanan', $keyword)->orLike('produk_layanan', $keyword)->groupEnd()->findAll();
+            } else {
+                $standar_layanan = $this->standarLayananModel->where('status', 2)->where('penyelenggara_layanan_id', session()->get('penyelenggara_layanan_id'))->groupStart()->like('nama_layanan', $keyword)->orLike('produk_layanan', $keyword)->groupEnd()->findAll();
+            }
+        } else {
+            if (session()->get('role_id') == 1) {
+                $standar_layanan = $this->standarLayananModel->where('status', 2)->findAll();
+            } else {
+                $standar_layanan = $this->standarLayananModel->where('status', 2)->where('penyelenggara_layanan_id', session()->get('penyelenggara_layanan_id'))->findAll();
+            }
+        }
+
+        foreach ($standar_layanan as $key => $value) {
+            $standar_layanan[$key]['penyelenggara_layanan'] = $this->penyelenggaraLayananModel->get_nama_penyelenggara_layanan_by_id($value['penyelenggara_layanan_id']);
+        }
+        // dd($standar_layanan);
+
+        $data = [
+            'tajuk' => 'Review Pengajuan',
+            'standar_layanan' => $standar_layanan,
+            'keyword' => $keyword,
+        ];
+
+        return view('layanan/review_pengajuan', $data);
+    }
+
+    public function detail_review($id)
+    {
+        // 
+        if (!session()->get('email')) {
+            return redirect()->to('/login');
+        }
+
+        if (!in_array(1, session()->get('permission'))) {
+            return redirect()->to('/dashboard');
+        }
+
+        $data = [
+            'tajuk' => 'Detail Review',
+            'standar_layanan' => $this->standarLayananModel->get_standar_layanan_by_id($id),
+            'review_standar_layanan' => $this->reviewStandarLayananModel->get_all_review_standar_layanan_by_id($id),
+        ];
+
+        return view('layanan/detail_review', $data);
     }
 }

@@ -18,10 +18,13 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <form>
+                <form class="search-form" action="<?= base_url('/dashboard'); ?>" method="get">
                     <div class="mb-3">
-                        <input type="" class="form-control" placeholder="Masukkan kata kunci" id="" aria-describedby="">
-                        <div id="searchHelp" class="form-text"><b>Contoh:</b> layanan, ijazah, laporan, data, kerjasama, dan lain lain...</div>
+                        <input type="text" name="search" class="form-control" placeholder="Masukkan kata kunci" value="<?= esc($keyword) ?>" id="search-input" aria-describedby="" oninput="searchService()" />
+                        <div id="searchHelp" class="form-text">
+                            <b>Contoh:</b> layanan, ijazah, laporan, data,
+                            kerjasama, dan lain lain...
+                        </div>
                     </div>
                 </form>
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
@@ -33,7 +36,7 @@
                                     <div class="flex-grow">
                                         <span class="fw-bolder"><?= $layanan['nama_layanan']; ?></span>
                                         <br />
-                                        <span class="fw-light"><?= $layanan['produk_layanan']; ?></span>
+                                        <span class="fw-light"><?= substr($layanan['produk_layanan'], 0, 25); ?></span>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end mt-auto">

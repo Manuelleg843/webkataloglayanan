@@ -3,16 +3,22 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\PenyelenggaraLayananModel;
+use App\Models\RoleHasPermissionModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Authentication extends BaseController
 {
     protected $userModel;
+    protected $penyelenggaraLayananModel;
+    protected $roleHasPermissionModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel();
+        $this->penyelenggaraLayananModel = new PenyelenggaraLayananModel();
+        $this->roleHasPermissionModel = new RoleHasPermissionModel();
     }
 
     public function index()
@@ -76,6 +82,19 @@ class Authentication extends BaseController
             'role_id' => $user['role_id'],
             'penyelenggara_layanan_id' => $user['penyelenggara_layanan_id'],
         ];
+
+        $permission = $this->roleHasPermissionModel->where('role_id', $user['role_id'])->findAll();
+        foreach ($permission as $key => $value) {
+            $data['permission'][$key] = $value['permission_id'];
+        }
+
+        if ($user['role_id'] == 2) {
+            $penyelenggara_layanan = $this->penyelenggaraLayananModel->get_penyelenggara_layanan_by_id($user['penyelenggara_layanan_id']);
+            $data['penyelenggara_layanan'] = $penyelenggara_layanan['nama'];
+        } else {
+            $data['penyelenggara_layanan'] = "";
+        }
+
         session()->set($data);
         return true;
     }

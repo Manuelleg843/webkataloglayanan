@@ -61,4 +61,9 @@ class StandarLayananModel extends Model
     {
         return $this->where('status', $status)->findAll();
     }
+
+    public function get_standar_layanan_where_penyelenggara_layanan_id($penyelenggara_layanan_id)
+    {
+        return $this->where('penyelenggara_layanan_id', $penyelenggara_layanan_id)->findAll();
+    }
 }

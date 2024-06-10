@@ -8,7 +8,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Daftar Layanan STIS</h1>
+                    <h1 class="m-0">Daftar Layanan <?= (session()->get('role_id') == 2) ? session()->get('penyelenggara_layanan') : "STIS" ?></h1>
                     <?php if (session()->getFlashdata('pesan')) : ?>
                         <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
                             <?= session()->getFlashdata('pesan'); ?>
@@ -23,10 +23,13 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
-                <form>
+                <form class="search-form" action="<?= base_url('/manajemen_layanan'); ?>" method="get">
                     <div class="mb-3">
-                        <input type="" class="form-control" placeholder="Masukkan kata kunci" id="" aria-describedby="">
-                        <div id="searchHelp" class="form-text"><b>Contoh:</b> layanan, ijazah, laporan, data, kerjasama, dan lain lain...</div>
+                        <input type="text" name="search" class="form-control" placeholder="Masukkan kata kunci" value="<?= esc($keyword) ?>" id="search-input" aria-describedby="" oninput="searchService()" />
+                        <div id="searchHelp" class="form-text">
+                            <b>Contoh:</b> layanan, ijazah, laporan, data,
+                            kerjasama, dan lain lain...
+                        </div>
                     </div>
                 </form>
                 <h5 class="card-title fw-semibold mb-4">Layanan Terdaftar</h5>
@@ -60,7 +63,7 @@
                                     </td>
                                     <td class="border-bottom-0">
                                         <h6 class="fw-semibold mb-1"><?= $layanan['nama_layanan']; ?></h6>
-                                        <span class="fw-normal"><?= $layanan['produk_layanan']; ?></span>
+                                        <span class="fw-normal"><?= substr($layanan['produk_layanan'], 0, 25); ?></span>
                                     </td>
                                     <td class="border-bottom-0">
                                         <p class="mb-0 fw-normal"><?= $layanan['penyelenggara_layanan']; ?></p>

@@ -21,7 +21,7 @@
                         <h5 class="card-title fw-semibold mb-4">Form Review <?= $standar_layanan['nama_layanan']; ?></h5>
                         <div class="card">
                             <div class="card-body">
-                                <form action="<?= base_url('/review_layanan/save'); ?>" method="POST" enctype="multipart/form-data">
+                                <form action="<?= base_url('/review_layanan/save/' . $standar_layanan['id']); ?>" method="POST" enctype="multipart/form-data">
                                     <?= csrf_field(); ?>
 
                                     <?php

@@ -18,8 +18,18 @@ class Home extends BaseController
 
     public function index(): string
     {
+
+        $keyword = $this->request->getVar('search');
+
+        if ($keyword) {
+            $standar_layanan = $this->standarLayananModel->where('status', 1)->groupStart()->like('nama_layanan', $keyword)->orLike('produk_layanan', $keyword)->groupEnd()->findAll();
+        } else {
+            $standar_layanan = $this->standarLayananModel->where('status', 1)->findAll();
+        }
+
         $data = [
-            'standar_layanan' => $this->standarLayananModel->get_standar_layanan_where_status('1'),
+            'standar_layanan' => $standar_layanan,
+            'keyword' => $keyword,
         ];
         return view('pages/landing_page', $data);
     }
@@ -31,9 +41,16 @@ class Home extends BaseController
             return redirect()->to('/login');
         }
 
+        if ($keyword = $this->request->getVar('search')) {
+            $standar_layanan = $this->standarLayananModel->where('status', 1)->groupStart()->like('nama_layanan', $keyword)->orLike('produk_layanan', $keyword)->groupEnd()->findAll();
+        } else {
+            $standar_layanan = $this->standarLayananModel->get_standar_layanan_where_status('1');
+        }
+
         $data = [
             'tajuk' => 'Dashboard',
-            'standar_layanan' => $this->standarLayananModel->get_standar_layanan_where_status('1'),
+            'standar_layanan' => $standar_layanan,
+            'keyword' => $keyword,
         ];
 
         return view('pages/dashboard', $data);

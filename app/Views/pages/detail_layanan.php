@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Katalog Layanan STIS</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/stis.png" />
-    <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <link rel="shortcut icon" type="image/png" href="<?= base_url('/assets/images/logos/stis.png'); ?>" />
+    <link rel="stylesheet" href="<?= base_url('/assets/css/styles.min.css'); ?>" />
 </head>
 
 <body>
@@ -18,7 +18,7 @@
             <header class="app-header mb-4" style="position: fixed">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <div class="brand-logo d-flex align-items-center justify-content-between">
-                        <a href="#" class="text-nowrap logo-img">
+                        <a href="<?= base_url('/'); ?>" class="text-nowrap logo-img">
                             <img src="../assets/images/logos/stis.png" class="mx-1" width="40" alt="" />
                             <span class="card-title text-dark fw-bolder">Katalog Layanan STIS</span>
                         </a>
@@ -164,13 +164,14 @@
             </div>
         </div>
     </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+    <script src="<?= base_url('/assets/libs/jquery/dist/jquery.min.js'); ?>"></script>
+    <script src="<?= base_url('/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js'); ?>"></script>
+    <script src="<?= base_url('/assets/js/sidebarmenu.js'); ?>"></script>
+    <script src="<?= base_url('/assets/js/app.min.js'); ?>"></script>
+    <script src="<?= base_url('/assets/libs/apexcharts/dist/apexcharts.min.js'); ?>"></script>
+    <script src="<?= base_url('/assets/libs/simplebar/dist/simplebar.js'); ?>"></script>
+    <script src="<?= base_url('/assets/js/dashboard.js'); ?>"></script>
+    <script src="<?= base_url('/assets/js/layanan_form.js'); ?>"></script>
 </body>
 
 </html>
